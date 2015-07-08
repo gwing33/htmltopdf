@@ -16,5 +16,8 @@ ADD wkhtmltopdf.sh /usr/local/bin/
 
 ADD play/target/universal/stage /root
 
+# Add the easy to use commands
+ADD /cmds/ /usr/local/bin/
+
 WORKDIR "/root/"
 EXPOSE 9000

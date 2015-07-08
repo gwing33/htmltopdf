@@ -7,12 +7,12 @@ Simple HTTP client for generating PDFs in Scala
 
 Make sure to [Install Docker](https://docs.docker.com/installation/)
 
-Build Development Image
+**Build Development Image**
 ```bash
 docker build -t htmltopdf_dev -f Dockerfile.dev .
 ```
 
-Run Development Image for Development
+**Run Development Image for Development**
 ```bash
 docker run -it -v $(pwd)/play:/root/ -p 9000:9000 htmltopdf_dev ./activator ~run
 ```
@@ -22,21 +22,28 @@ _(If you're on OS X, you'll need to get the IP of your VM)_
 Simple test url: ``localhost:9000?url=https://www.google.com&filename=test``
 
 
-Produce Production Jar
+**Building code for Production**
 ```bash
 # This will pack the application to be run on the production image.
-docker run -it -v $(pwd)/play:/root/ htmltopdf_dev ./activator stage
+docker run -it -v $(pwd)/play:/root/ htmltopdf_dev build
 ```
 
-# TODO
-Build Production Image
+**Build Production Image**
 ```bash
 docker build -t htmltopdf .
 ```
 
-Run Production Image
+**Run Production Image**
 ```bash
-docker run -d -p 9000:9000 htmltopdf bin/htmltopdf
+docker run -d -p 9000:9000 htmltopdf run
 ```
 
-Then you can post html and title params to http://{docker_ip}:8080 and it will return a PDF.
+
+## Usage
+
+There are only 2 API calls.
+
+| Path | Method | Params         |
+|------|--------|----------------|
+| /    | GET    | url, filename  |
+| /    | POST   | html, filename |

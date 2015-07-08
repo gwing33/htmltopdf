@@ -36,5 +36,8 @@ RUN cd /tmp && \
 RUN apt-get install -y wkhtmltopdf build-essential xorg libssl-dev xvfb
 ADD wkhtmltopdf.sh /usr/local/bin/
 
+# Add the easy to use commands
+ADD /cmds/ /usr/local/bin/
+
 WORKDIR /root/
 EXPOSE 9000
