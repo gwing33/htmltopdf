@@ -1,0 +1,7 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.url(url: String, filename: String)
+POST    /                           controllers.Application.html(html: String, filename: String)

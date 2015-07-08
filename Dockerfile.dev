@@ -1,9 +1,8 @@
 FROM ubuntu:14.04
 
-MAINTAINER  Gerald Leenerts <gleenerts@lifetimefitness.com>
+MAINTAINER Gerald Leenerts <gleenerts@lifetimefitness.com>
 
-ENV SCALA_VERSION 2.11.4
-ENV SBT_VERSION 0.13.8
+ENV ACTIVATOR_VERSION 1.3.5
 
 # INSTALL OS DEPENDENCIES
 RUN apt-get update && apt-get install -y \
@@ -21,18 +20,12 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-s
     apt-get update && \
     apt-get install -y oracle-java8-installer
 
-# Install Scala
-RUN apt-get remove scala-library scala
-RUN wget www.scala-lang.org/files/archive/scala-$SCALA_VERSION.deb
-RUN dpkg -i scala-$SCALA_VERSION.deb
-RUN apt-get install scala
-RUN rm scala-$SCALA_VERSION.deb
-
-# Install SBT
-RUN wget http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
-RUN dpkg -i sbt-$SBT_VERSION.deb
-RUN apt-get install sbt
-RUN rm sbt-$SBT_VERSION.deb
+# INSTALL TYPESAFE ACTIVATOR
+RUN cd /tmp && \
+    wget http://downloads.typesafe.com/typesafe-activator/$ACTIVATOR_VERSION/typesafe-activator-$ACTIVATOR_VERSION.zip && \
+    unzip typesafe-activator-$ACTIVATOR_VERSION.zip -d /usr/local && \
+    mv /usr/local/activator-dist-$ACTIVATOR_VERSION /usr/local/activator && \
+    rm typesafe-activator-$ACTIVATOR_VERSION.zip
 
 # - - -
 # Everything above this,
@@ -40,6 +33,8 @@ RUN rm sbt-$SBT_VERSION.deb
 # - - -
 
 # Install wkhtmltopdf
-RUN apt-get install -y wkhtmltopdf
+RUN apt-get install -y wkhtmltopdf build-essential xorg libssl-dev xvfb
+ADD wkhtmltopdf.sh /usr/local/bin/
 
 WORKDIR /root/
+EXPOSE 8080

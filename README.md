@@ -14,8 +14,9 @@ docker build -t htmltopdf_dev -f Dockerfile.dev .
 
 Run Development Image
 ```
-docker run -it -v $(pwd):/root/ htmltopdf_dev sbt run
+docker run -it -v $(pwd)/play:/root/ -p 9000:9000 htmltopdf_dev activator run
 ```
+
 # TODO
 Build Production Image
 ```
