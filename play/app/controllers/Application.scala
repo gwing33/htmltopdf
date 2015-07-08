@@ -9,17 +9,31 @@ import io.github.cloudify.scala.spdf._
 class Application extends Controller {
 
   def url(url: String, filename: String) = Action {
-    val html = new URL(url)
+    val pdf = getPDF()
 
-    generatePdf(filename, html.toString)
+    val outputStream = new ByteArrayOutputStream
+    pdf.run(new URL(url), outputStream)
+
+    Ok(outputStream.toByteArray()).withHeaders(
+      "Content-Type" -> "application/pdf",
+      "Content-Disposition" -> s"attachment; filename=$filename.pdf"
+    )
   }
 
   def html(html: String, filename: String) = Action {
-    generatePdf(filename, html)
+    val pdf = getPDF()
+
+    val outputStream = new ByteArrayOutputStream
+    pdf.run(html, outputStream)
+
+    Ok(outputStream.toByteArray()).withHeaders(
+      "Content-Type" -> "application/pdf",
+      "Content-Disposition" -> s"attachment; filename=$filename.pdf"
+    )
   }
 
-  def generatePdf(filename: String, html: String) = {
-    val pdf = Pdf("/usr/local/bin/wkhtmltopdf.sh", new PdfConfig {
+  def getPDF() = {
+    Pdf("/usr/local/bin/wkhtmltopdf.sh", new PdfConfig {
       orientation := Landscape
       pageSize := "Letter"
       marginTop := "0in"
@@ -27,14 +41,6 @@ class Application extends Controller {
       marginLeft := "0in"
       marginRight := "0in"
     })
-
-    val outputStream = new ByteArrayOutputStream
-    pdf.run(html, outputStream)
-
-    Ok(outputStream.toByteArray()).withHeaders(
-      "Content-Type" -> "application/pdf",
-      "Content-Disposition" -> "attachment; filename=$filename.png"
-    )
   }
 
 }
