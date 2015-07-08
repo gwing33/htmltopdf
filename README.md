@@ -25,7 +25,7 @@ Simple test url: ``localhost:9000?url=https://www.google.com&filename=test``
 Produce Production Jar
 ```bash
 # This will pack the application to be run on the production image.
-docker run -it -v $(pwd)/play:/root/ htmltopdf_dev ./activator dist
+docker run -it -v $(pwd)/play:/root/ htmltopdf_dev ./activator stage
 ```
 
 # TODO
@@ -36,7 +36,7 @@ docker build -t htmltopdf .
 
 Run Production Image
 ```bash
-docker run -it htmltopdf
+docker run -it htmltopdf bin/htmltopdf
 ```
 
 Then you can post html and title params to http://{docker_ip}:8080 and it will return a PDF.

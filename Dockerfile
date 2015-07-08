@@ -1,11 +1,17 @@
 FROM ubuntu:14.04
 
-RUN apt-get update & apt-get install -y wkhtmltopdf
-RUN mkdir /root/
-RUN mkdir /root/www
+# INSTALL JAVA 8
+RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt-get update && \
+    apt-get install -y oracle-java8-installer
 
-# ADD [some files...] /root
-# ADD [some files...] /root/www
+# Install wkhtmltopdf
+RUN apt-get install -y wkhtmltopdf build-essential xorg libssl-dev xvfb
+ADD wkhtmltopdf.sh /usr/local/bin/
+
+ADD play/target/universal/stage /root
 
 WORKDIR "/root/"
-EXPOSE 8080
+EXPOSE 9000
