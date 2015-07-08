@@ -36,7 +36,7 @@ docker build -t htmltopdf .
 
 Run Production Image
 ```bash
-docker run -it htmltopdf bin/htmltopdf
+docker run -d -p 9000:9000 htmltopdf bin/htmltopdf
 ```
 
 Then you can post html and title params to http://{docker_ip}:8080 and it will return a PDF.
