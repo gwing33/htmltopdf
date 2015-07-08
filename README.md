@@ -21,6 +21,11 @@ _(If you're on OS X, you'll need to get the IP of your VM)_
 
 Simple test url: ``localhost:9000?url=https://www.google.com&filename=test``
 
+**Run Some Tests**
+```bash
+docker run -it -v $(pwd)/play:/root/ htmltopdf_dev test
+```
+
 
 **Building code for Production**
 ```bash
